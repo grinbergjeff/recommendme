@@ -33,6 +33,9 @@ body {
 	background-color: #93B2C7;
 }
 /* Bouncing Arrow Section */
+#down:hover {
+	cursor: pointer;
+}
 #down {
 	color: white;
 	-webkit-animation: bounce 1.2s infinite;
