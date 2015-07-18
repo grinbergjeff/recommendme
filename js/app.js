@@ -1,6 +1,14 @@
-window.onload = function(){ 
+//JQuery Code:
+$(document).ready(function() {
 	//When bouncing arrow is pressed, browser scrolls to next section
-	document.getElementById('down').onclick = function() {
-		alert('ouch');
-	}
+	$('#down').click(function() {
+		$('body, html').animate({
+			scrollTop: $('#wdyl').offset().top}, 1000);
+	});
+});
+
+
+//Javascript Code:
+window.onload = function(){ 
+
 };
