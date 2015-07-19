@@ -27,6 +27,7 @@ function whatuserlikes() {
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
 			$('#user-enjoys').empty().prepend('<h2 class="display-similar"> RecommendMe something similar to: <form id="lock"><input type="text" class="user-input" placeholder="' + userlikes + '"</h2>');
+			ent.preventDefault();
 			//Make the search query fixed when scrolling past it
 		$(window).scroll(function(){
       		if ( $(this).scrollTop() > $('#grid-section').offset().top ) {
