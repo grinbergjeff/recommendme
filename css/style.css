@@ -74,7 +74,7 @@ ul li {
 	display: inline-block;
 }
 /* Input Field Section */
-#user-input {
+.user-input {
 	color: white;
 	font-size: 30px;
 	text-align: center;
@@ -82,7 +82,7 @@ ul li {
 	border-style: none none solid none;
 	border-color: white;
 }
-#user-input:focus {
+.user-input:focus {
 	outline: none;	
 }
 ::-webkit-input-placeholder {
@@ -98,6 +98,30 @@ ul li {
    color: white;  
 }
 /*Grid Section*/
+#user-enjoys{
+	margin-top: -20px;
+	height: 70px;
+	background-color: #93B2C7;
+	text-align: center;
+}
+#user-enjoys:hover {
+	cursor: pointer;
+}
+.fixed {
+	position:fixed;
+    top:0;
+    width:100%;
+    z-index:100;
+}
+#lock {
+	display:inline-block;
+	margin-top: -8px;
+}
+.display-similar {
+	padding-top: 1%;
+	color: white;	
+	position: relative;
+}
 #grid-section {
 	height: 100%;
 	background-color: white;
