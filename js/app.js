@@ -20,11 +20,20 @@ function downarrow() {
 function whatuserlikes() {
 	$('#user-input').keydown(function(ent) {
 		if (ent.which == 13) {
+			var userlikes = $('#user-input').val();
+			console.log('user likes1: ' + userlikes);
 			ent.preventDefault();
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
-			var userlikes = $('#user-input').val();
-			console.log('user likes1: ' + userlikes);
+			$('#user-enjoys').empty().prepend('<h2 class="display-similar"> RecommendMe something similar to: <form id="lock"><input type="text" id="user-input" placeholder="' + userlikes + '"</h2>');
+			//Make the search query fixed when scrolling past it
+		$(window).scroll(function(){
+      		if ( $(this).scrollTop() > $('#grid-section').offset().top ) {
+          	$('#user-enjoys').addClass('fixed');
+      		} else {
+				$('#user-enjoys').removeClass('fixed');
+			}
+  		});
 			$(this).val('');
 		}
 	});
