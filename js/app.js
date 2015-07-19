@@ -4,7 +4,7 @@ $(document).ready(function() {
 	whatuserlikes();
 	rotatewords();
 	//Grid
-	$("#MyPortfolio").portfolio({
+	$(".thumbs").portfolio({
 		cols: 3,
     	transition: 'slideDown'
 	});
@@ -21,10 +21,11 @@ function whatuserlikes() {
 	$('#user-input').keydown(function(ent) {
 		if (ent.which == 13) {
 			ent.preventDefault();
+			$('body, html').animate({
+			scrollTop: $('#grid-section').offset().top}, 1000);
 			var userlikes = $('#user-input').val();
-			console.log('user likes: ' + userlikes);
+			console.log('user likes1: ' + userlikes);
 			$(this).val('');
-			
 		}
 	});
 }
