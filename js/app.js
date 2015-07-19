@@ -3,6 +3,11 @@ $(document).ready(function() {
 	downarrow();
 	whatuserlikes();
 	rotatewords();
+	//Grid
+	$("#MyPortfolio").portfolio({
+		cols: 3,
+    	transition: 'slideDown'
+	});
 });
 //When bouncing arrow is pressed, browser scrolls to next section
 function downarrow() {

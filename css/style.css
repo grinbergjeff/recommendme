@@ -95,3 +95,7 @@ ul li {
 :-ms-input-placeholder {  
    color: white;  
 }
+/*Grid Section*/
+#grid-section {
+	height: 100%;	
+}
