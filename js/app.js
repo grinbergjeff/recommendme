@@ -1,5 +1,6 @@
 //JQuery Code:
 $(document).ready(function() {
+	$('#grid-section').hide(); //Hide grid section in the beginning
 	downarrow();
 	whatuserlikes();
 	rotatewords();
@@ -27,6 +28,7 @@ function whatuserlikes() {
 			getTastekid(userlikes);
 			console.log('user likes1: ' + userlikes);
 			ent.preventDefault();
+			$('#grid-section').fadeIn('medium');
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
 			$('#user-enjoys').empty().prepend('<h2 class="display-similar"> RecommendMe something similar to: <form id="lock"><input type="text" class="user-input" placeholder="' + userlikes + '"</h2>');
@@ -81,30 +83,34 @@ function getTastekid(query) {
 			console.log(query);
 			console.log('holy it worked!');
 			console.log('displaying the query');
-			var displayquery = displayinfo(item);
+			var displayquery = displayinfo(item, 1, 1);
 		});
+		var thumbnumber = 1;
 		$.each(result.Similar.Results, function(i, item) {
 			console.log('displaying similar results:');
-			var displaysimiar = displayinfo(item);
+			var simResExec = true;
+			//Need to change the thumb number so the correct information gets displayed
+			if(simResExec = true) {
+			thumbnumber++;
+			console.log('thumbernumber is now: ' + thumbnumber);
+			displayinfo(item, 1, thumbnumber);
+			}	
 		});
 	})
 	.fail(function(jqXHR, error, errorThrown) {
 		console.log('you messed up');
 	})
 }
-function displayinfo(rec) {
+function displayinfo(rec, times, thumbnumber) {
 	var i = 1;
 	var displaythumbs = $('#grid-section').find('.thumbs');
-	var displaydesc = $('#grid-section').find('#portfolio-content');
-	var imagelink = '"images/thumb1.jpg"'; // replace this with actual links
-	while (i < 11) {
-		console.log('i is: ' + i);
+	var displaydesc = $('#grid-section').find('.portfolio-content');
+	var imagelink = "'images/thumb1.jpg'"; // replace this with actual links
+	while (i <= times) {
 		//Append the thumbs portion for each entry
-		if (i === 1) {
-		displaythumbs.append('<li><a href="#thumb' + i + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
-		}
+		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
 		//Append the in-depth info and links
-		displaydesc.append('div id ="thumb' + i + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
+		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
 		i++;
 	}
 	/*
