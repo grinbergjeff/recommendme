@@ -100,7 +100,9 @@ function displayinfo(rec) {
 	while (i < 11) {
 		console.log('i is: ' + i);
 		//Append the thumbs portion for each entry
+		if (i === 1) {
 		displaythumbs.append('<li><a href="#thumb' + i + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
+		}
 		//Append the in-depth info and links
 		displaydesc.append('div id ="thumb' + i + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
 		i++;
