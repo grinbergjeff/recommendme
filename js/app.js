@@ -80,8 +80,12 @@ function getTastekid(query) {
 		$.each(result.Similar.Info, function(i, item) {
 			console.log(query);
 			console.log('holy it worked!');
-			console.log(item);
-			displayinfo(item);
+			console.log('displaying the query');
+			var displayquery = displayinfo(item);
+		});
+		$.each(result.Similar.Results, function(i, item) {
+			console.log('displaying similar results:');
+			var displaysimiar = displayinfo(item);
 		});
 	})
 	.fail(function(jqXHR, error, errorThrown) {
@@ -89,7 +93,20 @@ function getTastekid(query) {
 	})
 }
 function displayinfo(rec) {
-	console.log('displayinfo executing!')
+	var i = 1;
+	var displaythumbs = $('#grid-section').find('.thumbs');
+	var displaydesc = $('#grid-section').find('#portfolio-content');
+	var imagelink = '"images/thumb1.jpg"'; // replace this with actual links
+	while (i < 11) {
+		console.log('i is: ' + i);
+		//Append the thumbs portion for each entry
+		displaythumbs.html('<li><a href="#thumb' + i + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
+		//Append the in-depth info and links
+		displaydesc.html('div if ="thumb' + i + '">' + '<div class="media"><iframe src"' + rec.yUrl + '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe><div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
+		i++;
+	}
+	/*
+	console.log('displayinfo executing!');
 	//Here is the title of request:
 	console.log(rec.Name);
 	//Here is the Type of result:
@@ -98,5 +115,5 @@ function displayinfo(rec) {
 	console.log(rec.wTeaser);
 	//Here is the youtube link to the trailer:
 	console.log(rec.yUrl);
-	
+	*/
 }
