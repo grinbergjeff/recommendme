@@ -22,6 +22,9 @@ function whatuserlikes() {
 	$('.user-input').keydown(function(ent) {
 		if (ent.which == 13) {
 			var userlikes = $('.user-input').val();
+			var formattedquery = userlikes.replace(/ /g, '+');
+			//Send the query to Tastekid!
+			getTastekid(userlikes);
 			console.log('user likes1: ' + userlikes);
 			ent.preventDefault();
 			$('body, html').animate({
@@ -59,3 +62,41 @@ function rotatewords() {
 	}, 1000);
 }
 
+function getTastekid(query) {
+	var request = {
+		k: "147333-grinberg-Q21V1S5Z",
+		q: query,
+		info: 1,
+		verbose: 1,
+		format: "JSON"
+	};
+	$.ajax({
+		url: "https://www.tastekid.com/api/similar",
+		data: request,
+		dataType: "jsonp",
+		type: "GET",
+	})
+	.done(function(result){
+		$.each(result.Similar.Info, function(i, item) {
+			console.log(query);
+			console.log('holy it worked!');
+			console.log(item);
+			displayinfo(item);
+		});
+	})
+	.fail(function(jqXHR, error, errorThrown) {
+		console.log('you messed up');
+	})
+}
+function displayinfo(rec) {
+	console.log('displayinfo executing!')
+	//Here is the title of request:
+	console.log(rec.Name);
+	//Here is the Type of result:
+	console.log(rec.Type);
+	//Here is the Info:
+	console.log(rec.wTeaser);
+	//Here is the youtube link to the trailer:
+	console.log(rec.yUrl);
+	
+}
