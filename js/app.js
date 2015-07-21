@@ -1,14 +1,14 @@
 //JQuery Code:
 $(document).ready(function() {
-	$('#grid-section').hide(); //Hide grid section in the beginning
+	//$('#grid-section').hide(); //Hide grid section in the beginning
 	downarrow();
 	whatuserlikes();
 	rotatewords();
 	//Grid
-	$(".thumbs").portfolio({
-		cols: 3,
+	/*$(".thumbs").portfolio({
+		cols: 4,
     	transition: 'slideDown'
-	});
+	});*/
 });
 //When bouncing arrow is pressed, browser scrolls to next section
 function downarrow() {
@@ -83,7 +83,7 @@ function getTastekid(query) {
 			console.log(query);
 			console.log('holy it worked!');
 			console.log('displaying the query');
-			var displayquery = displayinfo(item, 1, 1);
+			var displayquery = displayinfo(item, 1);
 		});
 		var thumbnumber = 1;
 		$.each(result.Similar.Results, function(i, item) {
@@ -92,8 +92,10 @@ function getTastekid(query) {
 			//Need to change the thumb number so the correct information gets displayed
 			if(simResExec = true) {
 			thumbnumber++;
-			console.log('thumbernumber is now: ' + thumbnumber);
-			displayinfo(item, 1, thumbnumber);
+				if(thumbnumber <= 11) {
+					console.log('thumbernumber is now: ' + thumbnumber);
+			displayinfo(item, thumbnumber);
+				}
 			}	
 		});
 	})
@@ -101,27 +103,16 @@ function getTastekid(query) {
 		console.log('you messed up');
 	})
 }
-function displayinfo(rec, times, thumbnumber) {
-	var i = 1;
+function displayinfo(rec, thumbnumber) {
 	var displaythumbs = $('#grid-section').find('.thumbs');
 	var displaydesc = $('#grid-section').find('.portfolio-content');
 	var imagelink = "'images/thumb1.jpg'"; // replace this with actual links
-	while (i <= times) {
 		//Append the thumbs portion for each entry
+			//Append the in-depth info and links
 		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
-		//Append the in-depth info and links
 		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
-		i++;
-	}
-	/*
-	console.log('displayinfo executing!');
-	//Here is the title of request:
-	console.log(rec.Name);
-	//Here is the Type of result:
-	console.log(rec.Type);
-	//Here is the Info:
-	console.log(rec.wTeaser);
-	//Here is the youtube link to the trailer:
-	console.log(rec.yUrl);
-	*/
+	$(".thumbs").portfolio({
+		cols: 4,
+    	transition: 'slideDown'
+	});
 }
