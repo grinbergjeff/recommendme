@@ -1,14 +1,9 @@
 //JQuery Code:
 $(document).ready(function() {
-	//$('#grid-section').hide(); //Hide grid section in the beginning
+	$('#grid-section').hide(); //Hide grid section in the beginning
 	downarrow();
 	whatuserlikes();
 	rotatewords();
-	//Grid
-	/*$(".thumbs").portfolio({
-		cols: 4,
-    	transition: 'slideDown'
-	});*/
 });
 //When bouncing arrow is pressed, browser scrolls to next section
 function downarrow() {
@@ -23,11 +18,12 @@ function whatuserlikes() {
 	$('.user-input').keydown(function(ent) {
 		if (ent.which == 13) {
 			var userlikes = $('.user-input').val();
+			//Adjust input for URL syntax
 			var formattedquery = userlikes.replace(/ /g, '+');
 			//Send the query to Tastekid!
 			getTastekid(userlikes);
 			console.log('user likes1: ' + userlikes);
-			ent.preventDefault();
+			ent.preventDefault(); // Do not reload on submission
 			$('#grid-section').fadeIn('medium');
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
@@ -79,6 +75,7 @@ function getTastekid(query) {
 		type: "GET",
 	})
 	.done(function(result){
+		//Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
 			console.log(query);
 			console.log('holy it worked!');
@@ -86,12 +83,14 @@ function getTastekid(query) {
 			var displayquery = displayinfo(item, 1);
 		});
 		var thumbnumber = 1;
+		//Show the recommeneded items that are similar
 		$.each(result.Similar.Results, function(i, item) {
 			console.log('displaying similar results:');
 			var simResExec = true;
 			//Need to change the thumb number so the correct information gets displayed
 			if(simResExec = true) {
 			thumbnumber++;
+				//Show 10 similar results
 				if(thumbnumber <= 11) {
 					console.log('thumbernumber is now: ' + thumbnumber);
 			displayinfo(item, thumbnumber);
@@ -108,11 +107,13 @@ function displayinfo(rec, thumbnumber) {
 	var displaydesc = $('#grid-section').find('.portfolio-content');
 	var imagelink = "'images/thumb1.jpg'"; // replace this with actual links
 		//Append the thumbs portion for each entry
-			//Append the in-depth info and links
 		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
+		//Append the in-depth info and links
 		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
+	//Run the grid code!
 	$(".thumbs").portfolio({
 		cols: 4,
     	transition: 'slideDown'
 	});
+	/*Don't forget category books don't have youtube videos*/
 }
