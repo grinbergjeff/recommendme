@@ -43,7 +43,7 @@ function whatuserlikes() {
 }
 //Animates the rotation of words in the statmenet before input
 function rotatewords() {
-	var words = ['artist','movie','game','book','author'];
+	var words = ['artist','movie','game','book','author', 'tv-show'];
 	//var rotatingword = words[0];
 	var i = 0;
 	setInterval(function(){
@@ -108,17 +108,18 @@ function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	var EncAppId = btoa(AppId);
 	var search = "?Query=%27%" + searchquery;
 	var typesearch = "%20" + type +	"%27";
+	var size = "&ImageFilters=%27Size%3AMedium%27";
 	var format = "&$format=json";
-	var burl = serviceURL + search + typesearch + format;
+	var burl = serviceURL + search + typesearch + size + format;
 	
 	var bresult = $.ajax({
 		url: burl,
 		type: 'GET',
 		headers: {	'Authorization': "Basic " + EncAppId}
 	})
-	.success(function(bresult) {
+	.success( bresult = function(bingdata) {
 		console.log('bing query worked');
-		displayinfo(displayitem, displaythumbnumber, bresult.d.results[0].MediaUrl);
+		displayinfo(displayitem, displaythumbnumber, bingdata.d.results[0].MediaUrl);
 	})
 	.fail(function(jqXHR, error, errorThrown) {
 		console.log(' Bing Result :Failed');
@@ -127,15 +128,22 @@ function getBing(searchquery, type, displayitem, displaythumbnumber) {
 function displayinfo(rec, thumbnumber, imgurl) {
 	var displaythumbs = $('#grid-section').find('.thumbs');
 	var displaydesc = $('#grid-section').find('.portfolio-content');
+	console.log(rec.Name);
 	var imagelink = imgurl; // replace this with actual links
 		//Append the thumbs portion for each entry
 		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
 		//Append the in-depth info and links
 		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="512" height="370" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
+	/*Don't forget category books don't have youtube videos*/
+	if (rec.Type === "book" || rec.Type === "Book" || rec.Type === "Author" || rec.Type === "author") {
+		var thumbnum = "#thumb" + thumbnumber;
+		var notube = $(thumbnum).find('.media');
+		console.log('found you')
+		notube.hide();
+	}
 	//Run the grid code!
 	$(".thumbs").portfolio({
-		cols: 4,
+		cols: 1,
     	transition: 'slideDown'
 	});
-	/*Don't forget category books don't have youtube videos*/
 }
