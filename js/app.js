@@ -77,9 +77,9 @@ function getTastekid(query) {
 	.done(function(result){
 		//Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
-			getBing(query, item.Type);
-			console.log('');
-			var displayquery = displayinfo(item, 1);
+			getBing(query, item.Type, item, 1);
+			//console.log('');
+			//displayinfo(item, 1);
 		});
 		var thumbnumber = 1;
 		//Show the recommeneded items that are similar
@@ -92,8 +92,8 @@ function getTastekid(query) {
 				//Show 10 similar results
 				if(thumbnumber <= 11) {
 					console.log('thumbernumber is now: ' + thumbnumber);
-			getBing(item.Name, item.Type);
-			displayinfo(item, thumbnumber);
+			getBing(item.Name, item.Type, item, thumbnumber);
+			//displayinfo(item, thumbnumber);
 				}
 			}	
 		});
@@ -102,7 +102,7 @@ function getTastekid(query) {
 		console.log('you messed up');
 	})
 }
-function getBing(searchquery, type) {
+function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	var serviceURL = 'https://api.datamarket.azure.com/Bing/Search/v1/Image'; 
 	var AppId = ":O6C5e3SgWA9+peQEUMmHD1Y2T9HvafJAJz0KNruu+o0";//StackOverflow says to add a colon in front of your ID!!
 	var EncAppId = btoa(AppId);
@@ -117,16 +117,17 @@ function getBing(searchquery, type) {
 		headers: {	'Authorization': "Basic " + EncAppId}
 	})
 	.success(function(bresult) {
-		console.log('bing query worked')
+		console.log('bing query worked');
+		displayinfo(displayitem, displaythumbnumber, bresult.d.results[0].MediaUrl);
 	})
 	.fail(function(jqXHR, error, errorThrown) {
 		console.log(' Bing Result :Failed');
 	})
 }
-function displayinfo(rec, thumbnumber) {
+function displayinfo(rec, thumbnumber, imgurl) {
 	var displaythumbs = $('#grid-section').find('.thumbs');
 	var displaydesc = $('#grid-section').find('.portfolio-content');
-	var imagelink = "'images/thumb1.jpg'"; // replace this with actual links
+	var imagelink = imgurl; // replace this with actual links
 		//Append the thumbs portion for each entry
 		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
 		//Append the in-depth info and links
