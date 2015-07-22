@@ -27,7 +27,7 @@ function whatuserlikes() {
 			$('#grid-section').fadeIn('medium');
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
-			$('#user-enjoys').empty().prepend('<h2 class="display-similar"> RecommendMe something similar to: <form id="lock"><input type="text" class="user-input" placeholder="' + userlikes + '"</h2>');
+			/*$('#user-enjoys').empty().prepend('<h2 class="display-similar"> RecommendMe something similar to: <form id="lock"><input type="text" class="user-input" placeholder="' + userlikes + '"</h2>');
 			ent.preventDefault();
 			//Make the search query fixed when scrolling past it
 		$(window).scroll(function(){
@@ -36,7 +36,7 @@ function whatuserlikes() {
       		} else {
 				$('#user-enjoys').removeClass('fixed');
 			}
-  		});
+  		});*/
 			$(this).val('');
 		}
 	});
@@ -77,9 +77,8 @@ function getTastekid(query) {
 	.done(function(result){
 		//Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
-			console.log(query);
-			console.log('holy it worked!');
-			console.log('displaying the query');
+			getBing(query, item.Type);
+			console.log('');
 			var displayquery = displayinfo(item, 1);
 		});
 		var thumbnumber = 1;
@@ -93,6 +92,7 @@ function getTastekid(query) {
 				//Show 10 similar results
 				if(thumbnumber <= 11) {
 					console.log('thumbernumber is now: ' + thumbnumber);
+			getBing(item.Name, item.Type);
 			displayinfo(item, thumbnumber);
 				}
 			}	
@@ -102,6 +102,27 @@ function getTastekid(query) {
 		console.log('you messed up');
 	})
 }
+function getBing(searchquery, type) {
+	var serviceURL = 'https://api.datamarket.azure.com/Bing/Search/v1/Image'; 
+	var AppId = ":O6C5e3SgWA9+peQEUMmHD1Y2T9HvafJAJz0KNruu+o0";//StackOverflow says to add a colon in front of your ID!!
+	var EncAppId = btoa(AppId);
+	var search = "?Query=%27%" + searchquery;
+	var typesearch = "%20" + type +	"%27";
+	var format = "&$format=json";
+	var burl = serviceURL + search + typesearch + format;
+	
+	var bresult = $.ajax({
+		url: burl,
+		type: 'GET',
+		headers: {	'Authorization': "Basic " + EncAppId}
+	})
+	.success(function(bresult) {
+		console.log('bing query worked')
+	})
+	.fail(function(jqXHR, error, errorThrown) {
+		console.log(' Bing Result :Failed');
+	})
+}
 function displayinfo(rec, thumbnumber) {
 	var displaythumbs = $('#grid-section').find('.thumbs');
 	var displaydesc = $('#grid-section').find('.portfolio-content');
@@ -109,7 +130,7 @@ function displayinfo(rec, thumbnumber) {
 		//Append the thumbs portion for each entry
 		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
 		//Append the in-depth info and links
-		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
+		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="512" height="370" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
 	//Run the grid code!
 	$(".thumbs").portfolio({
 		cols: 4,
