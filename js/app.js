@@ -1,6 +1,8 @@
 //JQuery Code:
 $(document).ready(function() {
 	$('#grid-section').hide(); //Hide grid section in the beginning
+	 $('.recommenedmore').hide(); // Hide the what else do you like div
+	var userlikes;//global
 	downarrow();
 	whatuserlikes();
 	rotatewords();
@@ -27,26 +29,14 @@ function whatuserlikes() {
 	});
 }
 function scrolltogrid() {
-	var userlikes = $('.user-input').val();
+	userlikes = $('.user-input').val();//global variable for better search results
 			if (userlikes !== '') {
-			//Adjust input for URL syntax
-			var formattedquery = userlikes.replace(/ /g, '+');
 			//Send the query to Tastekid!
 			getTastekid(userlikes, 'null');
 			$('#grid-section').fadeIn('medium');
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
-			/*$('#user-enjoys').empty().prepend('<h2 class="display-similar"> RecommendMe something similar to: <form id="lock"><input type="text" class="user-input" placeholder="' + userlikes + '"</h2>');
-			ent.preventDefault();
-			//Make the search query fixed when scrolling past it
-		$(window).scroll(function(){
-      		if ( $(this).scrollTop() > $('#grid-section').offset().top ) {
-          	$('#user-enjoys').addClass('fixed');
-      		} else {
-				$('#user-enjoys').removeClass('fixed');
-			}
-  		});*/
-			$(this).val('');
+			$('.user-input').val('');
 			}
 }
 //Animates the rotation of words in the statmenet before input
@@ -103,7 +93,7 @@ function getTastekid(query, newquery) {
 			if(simResExec = true) {
 			thumbnumber++;
 				//Show 10 similar results
-				if(thumbnumber <= 11) {
+				if(thumbnumber <= 12) {
 					console.log('thumbernumber is now: ' + thumbnumber);
 			getBing(item.Name, item.Type, item, thumbnumber);
 			//displayinfo(item, thumbnumber);
@@ -156,7 +146,44 @@ function displayinfo(rec, thumbnumber, imgurl) {
 	}
 	//Run the grid code!
 	$(".thumbs").portfolio({
-		cols: 1,
+		cols: 3,
     	transition: 'slideDown'
 	});
 }
+//Allow user to get better search results by inputting what else they like
+function recmemore() {
+	$('.alsolike').click(function(ent) {
+		var morelikes = $('.morelike').val();
+		if (morelikes !== '') {
+			$('#grid-section').hide();
+			//Send the query to Tastekid!
+			getTastekid(userlikes, morelikes);
+		}
+		$('.alsolike').val('');
+		ent.preventDefault;
+	})
+	$('.morelike').keydown(function(ent) {
+		if (ent.which == 13) {
+			var morelikes = $('.morelike').val();
+			if (morelikes !== '') {
+				$('#grid-section').hide();
+				//Send the query to Tastekid!
+				getTastekid(userlikes, morelikes);
+				$('#grid-section').show();
+			}
+		$('.alsolike').val('');
+		} 
+		ent.preventDefault;
+	});
+	
+	
+}
+/*$(window).scroll(function() {
+//Make the what else do you like dissapear on scroll
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+      $('.recommenedmore').fadeIn();
+    }
+}*/
+
+
+							   
