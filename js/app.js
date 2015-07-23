@@ -6,6 +6,7 @@ $(document).ready(function() {
 	downarrow();
 	whatuserlikes();
 	rotatewords();
+	recmemore();
 });
 //When bouncing arrow is pressed, browser scrolls to next section
 function downarrow() {
@@ -65,13 +66,13 @@ function getTastekid(query, newquery) {
 		verbose: 1,
 		format: "JSON"
 	};
-	var searchme;
+	var searchme = "https://www.tastekid.com/api/similar?q=";
 	if (newquery !== 'null') {
-		searchme += '%2C+' + newquery;
+		searchme += ('%2C+' + newquery);
 	
 	}
 	else {
-		searchme = "https://www.tastekid.com/api/similar?q=" + query;
+		searchme += query;
 	}
 	$.ajax({
 		url: searchme,
@@ -155,12 +156,13 @@ function recmemore() {
 	$('.alsolike').click(function(ent) {
 		var morelikes = $('.morelike').val();
 		if (morelikes !== '') {
-			$('#grid-section').hide();
+			$('#grid-section').fadeOut();
+			$('.thumbs, .portfolio-content').empty();
 			//Send the query to Tastekid!
 			getTastekid(userlikes, morelikes);
+			$('.alsolike').val('');
 		}
-		$('.alsolike').val('');
-		ent.preventDefault;
+		ent.preventDefault();
 	})
 	$('.morelike').keydown(function(ent) {
 		if (ent.which == 13) {
@@ -169,21 +171,10 @@ function recmemore() {
 				$('#grid-section').hide();
 				//Send the query to Tastekid!
 				getTastekid(userlikes, morelikes);
-				$('#grid-section').show();
+				$('#grid-section').fadeIn();
 			}
 		$('.alsolike').val('');
-		} 
-		ent.preventDefault;
+		}
+		ent.preventDefault();
 	});
-	
-	
 }
-/*$(window).scroll(function() {
-//Make the what else do you like dissapear on scroll
-    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-      $('.recommenedmore').fadeIn();
-    }
-}*/
-
-
-							   
