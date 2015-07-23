@@ -139,6 +139,7 @@ ul li {
 	height: 50px;
 	opacity: .8;
 	text-align: center;
+	z-index: 2;
 }
 .morelike {
 	background-color: transparent;

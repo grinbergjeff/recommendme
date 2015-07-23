@@ -160,21 +160,9 @@ function recmemore() {
 			$('.thumbs, .portfolio-content').empty();
 			//Send the query to Tastekid!
 			getTastekid(userlikes, morelikes);
+			$('#grid-section').fadeIn();
 			$('.alsolike').val('');
 		}
 		ent.preventDefault();
 	})
-	$('.morelike').keydown(function(ent) {
-		if (ent.which == 13) {
-			var morelikes = $('.morelike').val();
-			if (morelikes !== '') {
-				$('#grid-section').hide();
-				//Send the query to Tastekid!
-				getTastekid(userlikes, morelikes);
-				$('#grid-section').fadeIn();
-			}
-		$('.alsolike').val('');
-		}
-		ent.preventDefault();
-	});
 }
