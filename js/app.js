@@ -83,7 +83,8 @@ function getTastekid(query, newquery) {
 		//Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
 			//For every result of the original query, get image from Bing's API:
-			getBing(newquery, item.Type, item, 1);
+			getBing(query, item.Type, item, 1);
+			//getBing(newquery, item.Type, item, 1);
 		});
 		var thumbnumber = 1;
 		//Show the recommeneded items that are similar
