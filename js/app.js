@@ -15,8 +15,9 @@ function downarrow() {
 }
 //Inputs what the user likes
 function whatuserlikes() {
-	$('.user-submit').click(function() {
+	$('.user-submit').click(function(ent) {
 		scrolltogrid();
+		ent.preventDefault();
 	})
 	$('.user-input').keydown(function(ent) {
 		if (ent.which == 13) {
