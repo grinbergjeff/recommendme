@@ -16,7 +16,7 @@ function downarrow() {
 		$('.user-input').focus();
 	});
 }
-//Inputs what the user likes
+//Inputs what the user likes at the very beginning
 function whatuserlikes() {
 	$('.user-submit').click(function(ent) {
 		scrolltogrid();
@@ -58,7 +58,7 @@ function rotatewords() {
 		}
 	}, 1000);
 }
-
+//Function to get API results from Tastekid!
 function getTastekid(query, newquery) {
 	var request = {
 		k: "147333-grinberg-Q21V1S5Z",
@@ -66,6 +66,7 @@ function getTastekid(query, newquery) {
 		verbose: 1,
 		format: "JSON"
 	};
+	//Determines if this is the users first entry or an optimized entry (multiple liked things)
 	if (newquery !== query) {
 		searchme += ('%2C+' + newquery);
 	}
@@ -81,32 +82,35 @@ function getTastekid(query, newquery) {
 		console.log('done is: ' + searchme);
 		//Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
+			//For every result of the original query, get image from Bing's API:
 			getBing(newquery, item.Type, item, 1);
 		});
 		var thumbnumber = 1;
 		//Show the recommeneded items that are similar
 		$.each(result.Similar.Results, function(i, item) {
+			//Add each similar query result to reach limit of 10 results
 			var simResExec = true;
-			//Need to change the thumb number so the correct information gets displayed
+			//Need to change the thumb number so the correct information gets displayed (very important for the grid)
 			if(simResExec = true) {
 			thumbnumber++;
 				//Show 10 similar results
 				if(thumbnumber <= 12) {
 					console.log('thumbernumber is now: ' + thumbnumber);
 			getBing(item.Name, item.Type, item, thumbnumber);
-			//displayinfo(item, thumbnumber);
 				}
 			}	
 		});
 	})
+	//If request does not work properly:
 	.fail(function(jqXHR, error, errorThrown) {
 		console.log('you messed up');
 	})
 }
+//Function to get the images from Bing's API:
 function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	var serviceURL = 'https://api.datamarket.azure.com/Bing/Search/v1/Image'; 
-	var AppId = ":O6C5e3SgWA9+peQEUMmHD1Y2T9HvafJAJz0KNruu+o0";//StackOverflow says to add a colon in front of your ID!!
-	var EncAppId = btoa(AppId);
+	var AppId = ":O6C5e3SgWA9+peQEUMmHD1Y2T9HvafJAJz0KNruu+o0";//StackOverflow says to add a colon in front of your ID!! 
+	var EncAppId = btoa(AppId); //StackOverflow says to encode with base 64!
 	var search = "?Query=%27%" + searchquery;
 	var typesearch = "%20" + type +	"%27";
 	var size = "&ImageFilters=%27Aspect%3AWide%27";
@@ -116,21 +120,24 @@ function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	var bresult = $.ajax({
 		url: burl,
 		type: 'GET',
-		headers: {	'Authorization': "Basic " + EncAppId}
+		headers: {	'Authorization': "Basic " + EncAppId} // StackOverflow helps here too!
 	})
 	.success( bresult = function(bingdata) {
+		//If successful in getting results, display the image for each result!
 		console.log('bing query worked');
 		displayinfo(displayitem, displaythumbnumber, bingdata.d.results[0].MediaUrl);
 	})
+	//If not successful
 	.fail(function(jqXHR, error, errorThrown) {
 		console.log(' Bing Result :Failed');
 	})
 }
+//Function to display the thumbnails, extra description of the grid and the images from Bing
 function displayinfo(rec, thumbnumber, imgurl) {
 	var displaythumbs = $('#grid-section').find('.thumbs');
 	var displaydesc = $('#grid-section').find('.portfolio-content');
 	console.log(rec.Name);
-	var imagelink = imgurl; // replace this with actual links
+	var imagelink = imgurl; //URL to Bing's result for the query
 		//Append the thumbs portion for each entry
 		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
 		//Append the in-depth info and links
