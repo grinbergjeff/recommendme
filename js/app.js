@@ -15,15 +15,23 @@ function downarrow() {
 }
 //Inputs what the user likes
 function whatuserlikes() {
+	$('.user-submit').click(function() {
+		scrolltogrid();
+	})
 	$('.user-input').keydown(function(ent) {
 		if (ent.which == 13) {
-			var userlikes = $('.user-input').val();
+			scrolltogrid();
+			ent.preventDefault(); // Do not reload on submission
+		} 
+	});
+}
+function scrolltogrid() {
+	var userlikes = $('.user-input').val();
+			if (userlikes !== '') {
 			//Adjust input for URL syntax
 			var formattedquery = userlikes.replace(/ /g, '+');
 			//Send the query to Tastekid!
-			getTastekid(userlikes);
-			console.log('user likes1: ' + userlikes);
-			ent.preventDefault(); // Do not reload on submission
+			getTastekid(userlikes, 'null');
 			$('#grid-section').fadeIn('medium');
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
@@ -38,8 +46,7 @@ function whatuserlikes() {
 			}
   		});*/
 			$(this).val('');
-		}
-	});
+			}
 }
 //Animates the rotation of words in the statmenet before input
 function rotatewords() {
@@ -60,31 +67,36 @@ function rotatewords() {
 	}, 1000);
 }
 
-function getTastekid(query) {
+function getTastekid(query, newquery) {
 	var request = {
 		k: "147333-grinberg-Q21V1S5Z",
-		q: query,
 		info: 1,
 		verbose: 1,
 		format: "JSON"
 	};
+	var searchme;
+	if (newquery !== 'null') {
+		searchme += '%2C+' + newquery;
+	
+	}
+	else {
+		searchme = "https://www.tastekid.com/api/similar?q=" + query;
+	}
 	$.ajax({
-		url: "https://www.tastekid.com/api/similar",
+		url: searchme,
 		data: request,
 		dataType: "jsonp",
 		type: "GET",
 	})
 	.done(function(result){
+		console.log('searchme is: ' + searchme);
 		//Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
 			getBing(query, item.Type, item, 1);
-			//console.log('');
-			//displayinfo(item, 1);
 		});
 		var thumbnumber = 1;
 		//Show the recommeneded items that are similar
 		$.each(result.Similar.Results, function(i, item) {
-			console.log('displaying similar results:');
 			var simResExec = true;
 			//Need to change the thumb number so the correct information gets displayed
 			if(simResExec = true) {
@@ -108,7 +120,7 @@ function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	var EncAppId = btoa(AppId);
 	var search = "?Query=%27%" + searchquery;
 	var typesearch = "%20" + type +	"%27";
-	var size = "&ImageFilters=%27Size%3AMedium%27";
+	var size = "&ImageFilters=%27Aspect%3AWide%27";
 	var format = "&$format=json";
 	var burl = serviceURL + search + typesearch + size + format;
 	
