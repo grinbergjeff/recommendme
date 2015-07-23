@@ -2,7 +2,7 @@
 $(document).ready(function() {
 	$('#grid-section').hide(); //Hide grid section in the beginning
 	 $('.recommenedmore').hide(); // Hide the what else do you like div
-	var userlikes;//global
+	searchme = "https://www.tastekid.com/api/similar?q=";
 	downarrow();
 	whatuserlikes();
 	rotatewords();
@@ -33,7 +33,7 @@ function scrolltogrid() {
 	userlikes = $('.user-input').val();//global variable for better search results
 			if (userlikes !== '') {
 			//Send the query to Tastekid!
-			getTastekid(userlikes, 'null');
+			getTastekid(userlikes, userlikes);
 			$('#grid-section').fadeIn('medium');
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
@@ -66,14 +66,11 @@ function getTastekid(query, newquery) {
 		verbose: 1,
 		format: "JSON"
 	};
-	var searchme = "https://www.tastekid.com/api/similar?q=";
-	if (newquery !== 'null') {
+	if (newquery !== query) {
 		searchme += ('%2C+' + newquery);
-	
 	}
-	else {
-		searchme += query;
-	}
+	else { searchme += query; };
+	console.log('searchme is: ' + searchme);
 	$.ajax({
 		url: searchme,
 		data: request,
@@ -81,10 +78,10 @@ function getTastekid(query, newquery) {
 		type: "GET",
 	})
 	.done(function(result){
-		console.log('searchme is: ' + searchme);
+		console.log('done is: ' + searchme);
 		//Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
-			getBing(query, item.Type, item, 1);
+			getBing(newquery, item.Type, item, 1);
 		});
 		var thumbnumber = 1;
 		//Show the recommeneded items that are similar
