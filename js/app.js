@@ -83,8 +83,9 @@ function getTastekid(query, newquery) {
 		//Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
 			//For every result of the original query, get image from Bing's API:
-			getBing(query, item.Type, item, 1);
+			//getBing(query, item.Type, item, 1);
 			//getBing(newquery, item.Type, item, 1);
+			//getBing(item.Name,item.Type, item, 1);
 		});
 		var thumbnumber = 1;
 		//Show the recommeneded items that are similar
@@ -142,7 +143,7 @@ function displayinfo(rec, thumbnumber, imgurl) {
 		//Append the thumbs portion for each entry
 		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
 		//Append the in-depth info and links
-		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="512" height="370" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1>' + rec.Name + '</h1><p>' + rec.wTeaser + '</p> <a href="' + rec.wUrl + '" class="btn btn-primary">Learn More</a></div>');
+		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="512" height="370" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1 class="titlename">' + rec.Name + '</h1>'+ '<a href="' + rec.wUrl + '" class="moreinfo">Learn More</a>' + '<button type="button" class="addmetoo">I like this!</button>' + '<p>' + rec.wTeaser + '</p>' + '</div>');
 	/*Don't forget category books don't have youtube videos*/
 	if (rec.Type === "book" || rec.Type === "Book" || rec.Type === "Author" || rec.Type === "author") {
 		var thumbnum = "#thumb" + thumbnumber;
@@ -155,6 +156,8 @@ function displayinfo(rec, thumbnumber, imgurl) {
 		cols: 3,
     	transition: 'slideDown'
 	});
+	//After the grid is made, let users have chance to add items that are recommeneded to them but they already like to strengthen their recommendation
+		alsolikeclick();
 }
 //Allow user to get better search results by inputting what else they like
 function recmemore() {
@@ -166,8 +169,20 @@ function recmemore() {
 			//Send the query to Tastekid!
 			getTastekid(userlikes, morelikes);
 			$('#grid-section').fadeIn();
-			$('.alsolike').val('');
+			$('.morelike').val('');
 		}
 		ent.preventDefault();
+	})
+}
+//Allow users to click "I also like this!" to get better results.
+function alsolikeclick() {
+	$('.addmetoo').click(function() {
+		alert('finally');
+		/*console.log('clicked');
+		//Find the title of what user just clicked like for:
+		var foundtitle = $('.rm').parent().find('.titlename').val();
+		console.log('foundtitle is: ' + foundtitle);
+		getTastekid(userlikes, foundtitle);
+		ent.preventDefault();*/
 	})
 }
