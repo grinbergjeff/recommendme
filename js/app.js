@@ -10,7 +10,7 @@ $(document).ready(function() {
 });
 //When bouncing arrow is pressed, browser scrolls to next section
 function downarrow() {
-	$('#down').click(function() {
+	$('#down').on('click',function() {
 		$('body, html').animate({
 			scrollTop: $('#wdyl').offset().top}, 1000);
 		$('.user-input').focus();
@@ -18,14 +18,14 @@ function downarrow() {
 }
 //Inputs what the user likes at the very beginning
 function whatuserlikes() {
-	$('.user-submit').click(function(ent) {
+	$('.user-submit').on('click',function(e) {
 		scrolltogrid();
-		ent.preventDefault();
+		e.preventDefault();
 	})
-	$('.user-input').keydown(function(ent) {
-		if (ent.which == 13) {
+	$('.user-input').keydown(function(e) {
+		if (e.which == 13) {
 			scrolltogrid();
-			ent.preventDefault(); // Do not reload on submission
+			e.preventDefault(); // Do not reload on submission
 		} 
 	});
 }
@@ -97,7 +97,6 @@ function getTastekid(query, newquery) {
 			thumbnumber++;
 				//Show 10 similar results
 				if(thumbnumber <= 12) {
-					console.log('thumbernumber is now: ' + thumbnumber);
 			getBing(item.Name, item.Type, item, thumbnumber);
 				}
 			}	
@@ -105,7 +104,7 @@ function getTastekid(query, newquery) {
 	})
 	//If request does not work properly:
 	.fail(function(jqXHR, error, errorThrown) {
-		console.log('you messed up');
+		//Load a modal indicating no results were found
 	})
 }
 //Function to get the images from Bing's API:
@@ -126,7 +125,6 @@ function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	})
 	.success( bresult = function(bingdata) {
 		//If successful in getting results, display the image for each result!
-		console.log('bing query worked');
 		displayinfo(displayitem, displaythumbnumber, bingdata.d.results[0].MediaUrl);
 	})
 	//If not successful
@@ -148,7 +146,6 @@ function displayinfo(rec, thumbnumber, imgurl) {
 	if (rec.Type === "book" || rec.Type === "Book" || rec.Type === "Author" || rec.Type === "author") {
 		var thumbnum = "#thumb" + thumbnumber;
 		var notube = $(thumbnum).find('.media');
-		console.log('found you')
 		notube.hide();
 	}
 	//Run the grid code!
@@ -161,7 +158,7 @@ function displayinfo(rec, thumbnumber, imgurl) {
 }
 //Allow user to get better search results by inputting what else they like
 function recmemore() {
-	$('.alsolike').click(function(ent) {
+	$('.alsolike').on('click',function(e) {
 		var morelikes = $('.morelike').val();
 		if (morelikes !== '') {
 			$('#grid-section').fadeOut();
@@ -171,13 +168,14 @@ function recmemore() {
 			$('#grid-section').fadeIn();
 			$('.morelike').val('');
 		}
-		ent.preventDefault();
+		e.preventDefault();
 	})
 }
 //Allow users to click "I also like this!" to get better results.
 function alsolikeclick() {
-	$('.addmetoo').click(function() {
+	$('.addmetoo').on('click',function(e) {
 		alert('finally');
+		e.preventDefault();
 		/*console.log('clicked');
 		//Find the title of what user just clicked like for:
 		var foundtitle = $('.rm').parent().find('.titlename').val();
