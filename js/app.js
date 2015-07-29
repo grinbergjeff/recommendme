@@ -179,6 +179,7 @@ function recMeMore() {
 //Allow users to click "I also like this!" to get better results.
 function alsoLikeClick() {
 	$('.addmetoo').on('click',function(e) {
+		console.log('Event handler added');
 		alert('finally');
 		e.preventDefault();
 		/*console.log('clicked');
