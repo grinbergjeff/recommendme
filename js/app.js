@@ -1,36 +1,42 @@
 //JQuery Code:
 $(document).ready(function() {
-	$('#grid-section').hide(); //Hide grid section in the beginning
+	$("#fakeloader").fakeLoader({
+				timeToHide:3000, //T ime in milliseconds for fakeLoader disappear
+				zIndex:"999", // Default zIndex
+				spinner:"spinner7", // Options: 'spinner1', 'spinner2', 'spinner3', 'spinner4', 'spinner5', 'spinner6', 'spinner7'
+				bgColor:"#2ecc71", // Hex, RGB or RGBA colors
+	});
+	$('#grid-section').hide(); // Hide grid section in the beginning
 	 $('.recommenedmore').hide(); // Hide the what else do you like div
 	searchme = "https://www.tastekid.com/api/similar?q=";
-	downarrow();
-	whatuserlikes();
-	rotatewords();
-	recmemore();
+	downArrow();
+	whatUserLikes();
+	rotateWords();
+	recMeMore();
 });
-//When bouncing arrow is pressed, browser scrolls to next section
-function downarrow() {
+// When bouncing arrow is pressed, browser scrolls to next section
+function downArrow() {
 	$('#down').on('click',function() {
 		$('body, html').animate({
 			scrollTop: $('#wdyl').offset().top}, 1000);
 		$('.user-input').focus();
 	});
 }
-//Inputs what the user likes at the very beginning
-function whatuserlikes() {
+// Inputs what the user likes at the very beginning
+function whatUserLikes() {
 	$('.user-submit').on('click',function(e) {
-		scrolltogrid();
+		scrollToGrid();
 		e.preventDefault();
 	})
 	$('.user-input').keydown(function(e) {
 		if (e.which == 13) {
-			scrolltogrid();
+			scrollToGrid();
 			e.preventDefault(); // Do not reload on submission
 		} 
 	});
 }
-function scrolltogrid() {
-	userlikes = $('.user-input').val();//global variable for better search results
+function scrollToGrid() {
+	userlikes = $('.user-input').val();// global variable for better search results
 			if (userlikes !== '') {
 			//Send the query to Tastekid!
 			getTastekid(userlikes, userlikes);
@@ -40,10 +46,9 @@ function scrolltogrid() {
 			$('.user-input').val('');
 			}
 }
-//Animates the rotation of words in the statmenet before input
-function rotatewords() {
+// Animates the rotation of words in the statmenet before input
+function rotateWords() {
 	var words = ['artist','movie','game','book','author', 'tv-show'];
-	//var rotatingword = words[0];
 	var i = 0;
 	setInterval(function(){
 		var rotatingword = words[0];
@@ -52,13 +57,13 @@ function rotatewords() {
 			$(this).empty().prepend(rotatingword).fadeIn('slow');
 		});
 		i++;
-		//Make this loop infinitely
+		// Make this loop infinitely
 		if(i >= words.length) {
 			i = 0;
 		}
 	}, 1000);
 }
-//Function to get API results from Tastekid!
+// Function to get API results from Tastekid!
 function getTastekid(query, newquery) {
 	var request = {
 		k: "147333-grinberg-Q21V1S5Z",
@@ -66,7 +71,7 @@ function getTastekid(query, newquery) {
 		verbose: 1,
 		format: "JSON"
 	};
-	//Determines if this is the users first entry or an optimized entry (multiple liked things)
+	// Determines if this is the users first entry or an optimized entry (multiple liked things)
 	if (newquery !== query) {
 		searchme += ('%2C+' + newquery);
 	}
@@ -80,19 +85,19 @@ function getTastekid(query, newquery) {
 	})
 	.done(function(result){
 		console.log('done is: ' + searchme);
-		//Show the item the user likes
+		// Show the item the user likes
 		$.each(result.Similar.Info, function(i, item) {
-			//For every result of the original query, get image from Bing's API:
+			// For every result of the original query, get image from Bing's API:
 			//getBing(query, item.Type, item, 1);
 			//getBing(newquery, item.Type, item, 1);
 			//getBing(item.Name,item.Type, item, 1);
 		});
 		var thumbnumber = 1;
-		//Show the recommeneded items that are similar
+		//S how the recommeneded items that are similar
 		$.each(result.Similar.Results, function(i, item) {
-			//Add each similar query result to reach limit of 10 results
+			// Add each similar query result to reach limit of 10 results
 			var simResExec = true;
-			//Need to change the thumb number so the correct information gets displayed (very important for the grid)
+			// Need to change the thumb number so the correct information gets displayed (very important for the grid)
 			if(simResExec = true) {
 			thumbnumber++;
 				//Show 10 similar results
@@ -102,16 +107,16 @@ function getTastekid(query, newquery) {
 			}	
 		});
 	})
-	//If request does not work properly:
+	// If request does not work properly:
 	.fail(function(jqXHR, error, errorThrown) {
-		//Load a modal indicating no results were found
+		// Load a modal indicating no results were found
 	})
 }
-//Function to get the images from Bing's API:
+// Function to get the images from Bing's API:
 function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	var serviceURL = 'https://api.datamarket.azure.com/Bing/Search/v1/Image'; 
-	var AppId = ":O6C5e3SgWA9+peQEUMmHD1Y2T9HvafJAJz0KNruu+o0";//StackOverflow says to add a colon in front of your ID!! 
-	var EncAppId = btoa(AppId); //StackOverflow says to encode with base 64!
+	var AppId = ":O6C5e3SgWA9+peQEUMmHD1Y2T9HvafJAJz0KNruu+o0"; // StackOverflow says to add a colon in front of your ID!! 
+	var EncAppId = btoa(AppId); // StackOverflow says to encode with base 64!
 	var search = "?Query=%27%" + searchquery;
 	var typesearch = "%20" + type +	"%27";
 	var size = "&ImageFilters=%27Aspect%3AWide%27";
@@ -124,16 +129,16 @@ function getBing(searchquery, type, displayitem, displaythumbnumber) {
 		headers: {	'Authorization': "Basic " + EncAppId} // StackOverflow helps here too!
 	})
 	.success( bresult = function(bingdata) {
-		//If successful in getting results, display the image for each result!
-		displayinfo(displayitem, displaythumbnumber, bingdata.d.results[0].MediaUrl);
+		// If successful in getting results, display the image for each result!
+		displayInfo(displayitem, displaythumbnumber, bingdata.d.results[0].MediaUrl);
 	})
-	//If not successful
+	// If not successful
 	.fail(function(jqXHR, error, errorThrown) {
 		console.log(' Bing Result :Failed');
 	})
 }
-//Function to display the thumbnails, extra description of the grid and the images from Bing
-function displayinfo(rec, thumbnumber, imgurl) {
+// Function to display the thumbnails, extra description of the grid and the images from Bing
+function displayInfo(rec, thumbnumber, imgurl) {
 	var displaythumbs = $('#grid-section').find('.thumbs');
 	var displaydesc = $('#grid-section').find('.portfolio-content');
 	console.log(rec.Name);
@@ -154,10 +159,10 @@ function displayinfo(rec, thumbnumber, imgurl) {
     	transition: 'slideDown'
 	});
 	//After the grid is made, let users have chance to add items that are recommeneded to them but they already like to strengthen their recommendation
-		alsolikeclick();
+		alsoLikeClick();
 }
 //Allow user to get better search results by inputting what else they like
-function recmemore() {
+function recMeMore() {
 	$('.alsolike').on('click',function(e) {
 		var morelikes = $('.morelike').val();
 		if (morelikes !== '') {
@@ -172,7 +177,7 @@ function recmemore() {
 	})
 }
 //Allow users to click "I also like this!" to get better results.
-function alsolikeclick() {
+function alsoLikeClick() {
 	$('.addmetoo').on('click',function(e) {
 		alert('finally');
 		e.preventDefault();
