@@ -13,6 +13,11 @@ $(document).ready(function() {
 	whatUserLikes();
 	rotateWords();
 	recMeMore();
+	
+	console.log('going to execute alsoLikeClick');
+	//After the grid is made, let users have chance to add items that are recommeneded to them but they already like to strengthen their recommendation
+		alsoLikeClick();
+		console.log('executed alsoLikeClick');
 });
 // When bouncing arrow is pressed, browser scrolls to next section
 function downArrow() {
@@ -158,8 +163,6 @@ function displayInfo(rec, thumbnumber, imgurl) {
 		cols: 3,
     	transition: 'slideDown'
 	});
-	//After the grid is made, let users have chance to add items that are recommeneded to them but they already like to strengthen their recommendation
-		alsoLikeClick();
 }
 //Allow user to get better search results by inputting what else they like
 function recMeMore() {
