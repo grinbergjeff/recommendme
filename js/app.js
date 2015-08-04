@@ -8,16 +8,13 @@ $(document).ready(function() {
 	});
 	$('#grid-section').hide(); // Hide grid section in the beginning
 	 $('.recommenedmore').hide(); // Hide the what else do you like div
-	searchme = "https://www.tastekid.com/api/similar?q=";
+	searchMe = "https://www.tastekid.com/api/similar?q=";
 	downArrow();
 	whatUserLikes();
 	rotateWords();
 	recMeMore();
-	
-	console.log('going to execute alsoLikeClick');
 	//After the grid is made, let users have chance to add items that are recommeneded to them but they already like to strengthen their recommendation
-		alsoLikeClick();
-		console.log('executed alsoLikeClick');
+	alsoLikeClick();
 });
 // When bouncing arrow is pressed, browser scrolls to next section
 function downArrow() {
@@ -41,10 +38,10 @@ function whatUserLikes() {
 	});
 }
 function scrollToGrid() {
-	userlikes = $('.user-input').val();// global variable for better search results
-			if (userlikes !== '') {
+	userLikes = $('.user-input').val();// global variable for better search results
+			if (userLikes !== '') {
 			//Send the query to Tastekid!
-			getTastekid(userlikes, userlikes);
+			getTastekid(userLikes, userLikes);
 			$('#grid-section').fadeIn('medium');
 			$('body, html').animate({
 			scrollTop: $('#grid-section').offset().top}, 1000);
@@ -56,10 +53,10 @@ function rotateWords() {
 	var words = ['artist','movie','game','book','author', 'tv-show'];
 	var i = 0;
 	setInterval(function(){
-		var rotatingword = words[0];
-		rotatingword = words[i];
+		var rotatingWord = words[0];
+		rotatingWord = words[i];
 		$('.changeme').fadeOut('slow', function() {
-			$(this).empty().prepend(rotatingword).fadeIn('slow');
+			$(this).empty().prepend(rotatingWord).fadeIn('slow');
 		});
 		i++;
 		// Make this loop infinitely
@@ -69,7 +66,7 @@ function rotateWords() {
 	}, 1000);
 }
 // Function to get API results from Tastekid!
-function getTastekid(query, newquery) {
+function getTastekid(query, newQuery) {
 	var request = {
 		k: "147333-grinberg-Q21V1S5Z",
 		info: 1,
@@ -77,37 +74,28 @@ function getTastekid(query, newquery) {
 		format: "JSON"
 	};
 	// Determines if this is the users first entry or an optimized entry (multiple liked things)
-	if (newquery !== query) {
-		searchme += ('%2C+' + newquery);
+	if (newQuery !== query) {
+		searchMe += ('%2C+' + newQuery);
 	}
-	else { searchme += query; };
-	console.log('searchme is: ' + searchme);
+	else { searchMe += query; };
 	$.ajax({
-		url: searchme,
+		url: searchMe,
 		data: request,
 		dataType: "jsonp",
 		type: "GET",
 	})
 	.done(function(result){
-		console.log('done is: ' + searchme);
-		// Show the item the user likes
-		$.each(result.Similar.Info, function(i, item) {
-			// For every result of the original query, get image from Bing's API:
-			//getBing(query, item.Type, item, 1);
-			//getBing(newquery, item.Type, item, 1);
-			//getBing(item.Name,item.Type, item, 1);
-		});
-		var thumbnumber = 1;
-		//S how the recommeneded items that are similar
+		var thumbNumber = 1;
+		// Show the recommended items that are similar
 		$.each(result.Similar.Results, function(i, item) {
 			// Add each similar query result to reach limit of 10 results
 			var simResExec = true;
 			// Need to change the thumb number so the correct information gets displayed (very important for the grid)
 			if(simResExec = true) {
-			thumbnumber++;
-				//Show 10 similar results
-				if(thumbnumber <= 12) {
-			getBing(item.Name, item.Type, item, thumbnumber);
+			thumbNumber++;
+				//Show 12 similar results
+				if(thumbNumber < 14) {
+			getBing(item.Name, item.Type, item, thumbNumber);
 				}
 			}	
 		});
@@ -118,15 +106,15 @@ function getTastekid(query, newquery) {
 	})
 }
 // Function to get the images from Bing's API:
-function getBing(searchquery, type, displayitem, displaythumbnumber) {
+function getBing(searchQuery, type, displayItem, displayThumbnumber) {
 	var serviceURL = 'https://api.datamarket.azure.com/Bing/Search/v1/Image'; 
 	var AppId = ":O6C5e3SgWA9+peQEUMmHD1Y2T9HvafJAJz0KNruu+o0"; // StackOverflow says to add a colon in front of your ID!! 
 	var EncAppId = btoa(AppId); // StackOverflow says to encode with base 64!
-	var search = "?Query=%27%" + searchquery;
-	var typesearch = "%20" + type +	"%27";
+	var search = "?Query=%27%" + searchQuery;
+	var typeSearch = "%20" + type +	"%27";
 	var size = "&ImageFilters=%27Aspect%3AWide%27";
 	var format = "&$format=json";
-	var burl = serviceURL + search + typesearch + size + format;
+	var burl = serviceURL + search + typeSearch + size + format;
 	
 	var bresult = $.ajax({
 		url: burl,
@@ -135,7 +123,7 @@ function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	})
 	.success( bresult = function(bingdata) {
 		// If successful in getting results, display the image for each result!
-		displayInfo(displayitem, displaythumbnumber, bingdata.d.results[0].MediaUrl);
+		displayInfo(displayItem, displayThumbnumber, bingdata.d.results[0].MediaUrl);
 	})
 	// If not successful
 	.fail(function(jqXHR, error, errorThrown) {
@@ -143,20 +131,20 @@ function getBing(searchquery, type, displayitem, displaythumbnumber) {
 	})
 }
 // Function to display the thumbnails, extra description of the grid and the images from Bing
-function displayInfo(rec, thumbnumber, imgurl) {
-	var displaythumbs = $('#grid-section').find('.thumbs');
-	var displaydesc = $('#grid-section').find('.portfolio-content');
+function displayInfo(rec, thumbNumber, imgUrl) {
+	var displayThumbs = $('#grid-section').find('.thumbs');
+	var displayDesc = $('#grid-section').find('.portfolio-content');
 	console.log(rec.Name);
-	var imagelink = imgurl; //URL to Bing's result for the query
+	var imageLink = imgUrl; //URL to Bing's result for the query
 		//Append the thumbs portion for each entry
-		displaythumbs.append('<li><a href="#thumb' + thumbnumber + '" class="thumbnail" ' + 'style="background-image: url(' + imagelink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
+		displayThumbs.append('<li><a href="#thumb' + thumbNumber + '" class="thumbnail" ' + 'style="background-image: url(' + imageLink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
 		//Append the in-depth info and links
-		displaydesc.append('<div id="thumb' + thumbnumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="512" height="370" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1 class="titlename">' + rec.Name + '</h1>'+ '<a href="' + rec.wUrl + '" class="moreinfo">Learn More</a>' + '<button type="button" class="addmetoo">I like this!</button>' + '<p>' + rec.wTeaser + '</p>' + '</div>');
+		displayDesc.append('<div id="thumb' + thumbNumber + '">' + '<div class="media"><iframe src="' + rec.yUrl + '" width="512" height="370" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>' + '<h1 class="titlename">' + rec.Name + '</h1>'+ '<a href="' + rec.wUrl + '" class="moreinfo">Learn More</a>' + '<button type="button" class="addmetoo">I also like this!</button>' + '<p>' + rec.wTeaser + '</p>' + '</div>');
 	/*Don't forget category books don't have youtube videos*/
 	if (rec.Type === "book" || rec.Type === "Book" || rec.Type === "Author" || rec.Type === "author") {
-		var thumbnum = "#thumb" + thumbnumber;
-		var notube = $(thumbnum).find('.media');
-		notube.hide();
+		var thumbNum = "#thumb" + thumbNumber;
+		var noTube = $(thumbNum).find('.media');
+		noTube.hide();
 	}
 	//Run the grid code!
 	$(".thumbs").portfolio({
@@ -167,12 +155,12 @@ function displayInfo(rec, thumbnumber, imgurl) {
 //Allow user to get better search results by inputting what else they like
 function recMeMore() {
 	$('.alsolike').on('click',function(e) {
-		var morelikes = $('.morelike').val();
-		if (morelikes !== '') {
+		var moreLikes = $('.morelike').val();
+		if (moreLikes !== '') {
 			$('#grid-section').fadeOut();
 			$('.thumbs, .portfolio-content').empty();
 			//Send the query to Tastekid!
-			getTastekid(userlikes, morelikes);
+			getTastekid(userLikes, moreLikes);
 			$('#grid-section').fadeIn();
 			$('.morelike').val('');
 		}
@@ -183,11 +171,10 @@ function recMeMore() {
 function alsoLikeClick() {
 	$('.thumbs').on('click','.addmetoo',function(e) {
 		//Find the title of what user just clicked like for:
-		var foundtitle = $(this).parent().find('.titlename').text();
-		console.log('foundtitle is: ' + foundtitle);
+		var foundTitle = $(this).parent().find('.titlename').text();
 		$('#grid-section').fadeOut();
 		$('.thumbs, .portfolio-content').empty();
-		getTastekid(userlikes, foundtitle);
+		getTastekid(userLikes, foundTitle);
 		$('#grid-section').fadeIn();
 		e.preventDefault();
 	})
