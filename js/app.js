@@ -182,14 +182,13 @@ function recMeMore() {
 //Allow users to click "I also like this!" to get better results.
 function alsoLikeClick() {
 	$('.thumbs').on('click','.addmetoo',function(e) {
-		console.log('Event handler added');
-		alert('finally');
-		e.preventDefault();
-		/*console.log('clicked');
 		//Find the title of what user just clicked like for:
-		var foundtitle = $('.rm').parent().find('.titlename').val();
+		var foundtitle = $(this).parent().find('.titlename').text();
 		console.log('foundtitle is: ' + foundtitle);
+		$('#grid-section').fadeOut();
+		$('.thumbs, .portfolio-content').empty();
 		getTastekid(userlikes, foundtitle);
-		ent.preventDefault();*/
+		$('#grid-section').fadeIn();
+		e.preventDefault();
 	})
 }
