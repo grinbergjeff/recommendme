@@ -40,12 +40,12 @@ body {
 }
 #down {
 	color: white;
-	-webkit-animation: bounce 1.2s infinite;
-	-moz-animation: bounce 800ms infinite;
-	-o-animation: bounce 800ms infinite;
-	animation: bounce 1.2s infinite;
+	-webkit-animation: arrowbounce 1.2s infinite;
+	-moz-animation: arrowbounce 800ms infinite;
+	-o-animation: arrowbounce 800ms infinite;
+	animation: arrowbounce 1.2s infinite;
 }
-@keyframes bounce {
+@keyframes arrowbounce {
 	70% {
     transform:translateY(0%);
     padding-bottom: 7px;
