@@ -1,8 +1,7 @@
 //JQuery Code:
 $(document).ready(function() {
-	$('.thumbs, .portfolio-content, .spacetosee, #recommendmore').hide(); // Hide grid section in the beginning
-	$('.load-holder').fadeIn(3000);
-	 //$('.recommenedmore').hide(); // Hide the what else do you like div
+	$('#grid-section, #load-section').hide(); // Hide grid section in the beginning
+	 $('.recommenedmore').hide(); // Hide the what else do you like div
 	searchMe = "https://www.tastekid.com/api/similar?q=";
 	downArrow();
 	whatUserLikes();
@@ -36,11 +35,16 @@ function scrollToGrid() {
 	userLikes = $('.user-input').val();// global variable for better search results
 			if (userLikes !== '') {
 			//Send the query to Tastekid!
-			getTastekid(userLikes, userLikes);
-			$('#grid-section').fadeIn('medium');
+			getTastekid(userLikes, userLikes);	
+			$('#load-section').fadeIn('medium');
 			$('body, html').animate({
-			scrollTop: $('#grid-section').offset().top}, 1000);
+			scrollTop: $('#load-section').offset().top}, 1000);
 			$('.user-input').val('');
+			setTimeout(function() {
+				$('#load-section').fadeOut('fast', function() {
+					$('#grid-section').show();
+				});
+			}, 4600);
 			}
 }
 // Animates the rotation of words in the statmenet before input
@@ -154,9 +158,14 @@ function recMeMore() {
 		if (moreLikes !== '') {
 			$('#grid-section').fadeOut();
 			$('.thumbs, .portfolio-content').empty();
+			$('#load-section').fadeIn();
 			//Send the query to Tastekid!
 			getTastekid(userLikes, moreLikes);
-			$('#grid-section').fadeIn();
+			setTimeout(function() {
+				$('#load-section').fadeOut('fast', function() {
+					$('#grid-section').show();
+				});
+			}, 4600);
 			$('.morelike').val('');
 		}
 		e.preventDefault();
@@ -169,8 +178,13 @@ function alsoLikeClick() {
 		var foundTitle = $(this).parent().find('.titlename').text();
 		$('#grid-section').fadeOut();
 		$('.thumbs, .portfolio-content').empty();
+		$('#load-section').fadeIn();
 		getTastekid(userLikes, foundTitle);
-		$('#grid-section').fadeIn();
+		setTimeout(function() {
+				$('#load-section').fadeOut('fast', function() {
+					$('#grid-section').show();
+				});
+			}, 4600);
 		e.preventDefault();
 	})
 }

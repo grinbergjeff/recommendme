@@ -1,10 +1,13 @@
 body, html {
 	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
 }
 body {
 	font-family: 'PT Sans Narrow', sans-serif;
 	-webkit-font-smoothing: antialiased;
-	background-color: #EC4938;
+	background-color: #7F8C8D;
 }
 #overall-container {
 	width: 100%;
@@ -127,6 +130,9 @@ ul li {
    color: white;  
 }
 /*Loading Section*/
+#load-section {
+	height: 100%;
+}
 .load-holder {
 	background-color: #7F8C8D;	
 	height: 100%;
@@ -135,7 +141,7 @@ ul li {
 .load-message {
 	color: white;
 	text-align: center;
-	margin-top: -200px;
+	margin-top: 85px;
 }
 /*Grid Section*/
 .display-similar {
