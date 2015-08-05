@@ -126,10 +126,6 @@ ul li {
 :-ms-input-placeholder {  
    color: white;  
 }
-/*Loader Section */
-.load-holder {
-	text-align: center;
-	margin: o auto;
 }
 /*Grid Section*/
 .grid-section {
