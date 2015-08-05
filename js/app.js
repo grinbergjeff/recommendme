@@ -46,6 +46,10 @@ function scrollToGrid() {
 				});
 			}, 4600);
 			}
+	//In case user tries to use this input field again:
+	$(`#grid-section`).hide();
+	$('.thumbs, .portfolio-content').empty();
+	searchMe = "https://www.tastekid.com/api/similar?q=";
 }
 // Animates the rotation of words in the statmenet before input
 function rotateWords() {
@@ -84,6 +88,7 @@ function getTastekid(query, newQuery) {
 		type: "GET",
 	})
 	.done(function(result){
+		console.log('tastekid worked');
 		var thumbNumber = 1;
 		// Show the recommended items that are similar
 		$.each(result.Similar.Results, function(i, item) {
@@ -101,7 +106,12 @@ function getTastekid(query, newQuery) {
 	})
 	// If request does not work properly:
 	.fail(function(jqXHR, error, errorThrown) {
-		// Load a modal indicating no results were found
+		console.log('tastekid failed');
+		// Scroll to recommendation
+		$('body, html').animate({
+			scrollTop: $('#wdyl').offset().top}, 1000);
+		//Empty grid-section
+		$('.thumbs, .portfolio-content').empty();
 	})
 }
 // Function to get the images from Bing's API:
