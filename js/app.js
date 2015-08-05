@@ -1,7 +1,8 @@
 //JQuery Code:
 $(document).ready(function() {
-	$('#grid-section').hide(); // Hide grid section in the beginning
-	 $('.recommenedmore').hide(); // Hide the what else do you like div
+	$('.thumbs, .portfolio-content, .spacetosee, #recommendmore').hide(); // Hide grid section in the beginning
+	$('.load-holder').fadeIn(3000);
+	 //$('.recommenedmore').hide(); // Hide the what else do you like div
 	searchMe = "https://www.tastekid.com/api/similar?q=";
 	downArrow();
 	whatUserLikes();

@@ -1,6 +1,7 @@
 /*SpinKit*/
 .sk-folding-cube {
-  margin: 20px auto;
+  padding: 200px 0 0 200px;
+  margin: 0 auto;
   width: 40px;
   height: 40px;
   position: relative;

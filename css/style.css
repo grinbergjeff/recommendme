@@ -126,11 +126,18 @@ ul li {
 :-ms-input-placeholder {  
    color: white;  
 }
+/*Loading Section*/
+.load-holder {
+	background-color: #7F8C8D;	
+	height: 100%;
+	padding-top: 5px;
+}
+.load-message {
+	color: white;
+	text-align: center;
+	margin-top: -200px;
 }
 /*Grid Section*/
-.grid-section {
-	background-color: black;	
-}
 .display-similar {
 	padding-top: 1%;
 	color: white;	
