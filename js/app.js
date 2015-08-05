@@ -1,11 +1,5 @@
 //JQuery Code:
 $(document).ready(function() {
-	$("#fakeloader").fakeLoader({
-				timeToHide:3000, //T ime in milliseconds for fakeLoader disappear
-				zIndex:"999", // Default zIndex
-				spinner:"spinner7", // Options: 'spinner1', 'spinner2', 'spinner3', 'spinner4', 'spinner5', 'spinner6', 'spinner7'
-				bgColor:"#2ecc71", // Hex, RGB or RGBA colors
-	});
 	$('#grid-section').hide(); // Hide grid section in the beginning
 	 $('.recommenedmore').hide(); // Hide the what else do you like div
 	searchMe = "https://www.tastekid.com/api/similar?q=";
