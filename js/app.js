@@ -88,7 +88,6 @@ function getTastekid(query, newQuery) {
 		type: "GET",
 	})
 	.done(function(result){
-		console.log('tastekid worked');
 		var thumbNumber = 1;
 		// Show the recommended items that are similar
 		$.each(result.Similar.Results, function(i, item) {
@@ -96,10 +95,10 @@ function getTastekid(query, newQuery) {
 			var simResExec = true;
 			// Need to change the thumb number so the correct information gets displayed (very important for the grid)
 			if(simResExec = true) {
-			thumbNumber++;
+				thumbNumber++;
 				//Show 12 similar results
 				if(thumbNumber < 14) {
-			getBing(item.Name, item.Type, item, thumbNumber);
+					getBing(item.Name, item.Type, item, thumbNumber);
 				}
 			}	
 		});
