@@ -34,6 +34,13 @@ body {
 	width: 100%;
 	background-color: #93B2C7;
 }
+#copyrightrm {
+	height: 30px;
+	color: white;
+	margin-top: 40px; 	
+	text-align: center;
+	padding-bottom: 20px;
+}
 /* Bouncing Arrow Section */
 #down:hover {
 	cursor: pointer;
