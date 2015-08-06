@@ -113,7 +113,7 @@ function getTastekid(query, newQuery) {
 // Function to get the images from Bing's API:
 function getBing(searchQuery, type, displayItem, displayThumbnumber) {
 	var serviceURL = 'https://api.datamarket.azure.com/Bing/Search/v1/Image'; 
-	var AppId = ":O6C5e3SgWA9+peQEUMmHD1Y2T9HvafJAJz0KNruu+o0"; // StackOverflow says to add a colon in front of your ID!! 
+	var AppId = ":tBd1IpRMjCGWa2DLLvATp/n4ccHyXTV6qvvkdY+5lLg"; // StackOverflow says to add a colon in front of your ID!! 
 	var EncAppId = btoa(AppId); // StackOverflow says to encode with base 64!
 	var search = "?Query=%27%" + searchQuery;
 	var typeSearch = "%20" + type +	"%27";
