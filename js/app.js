@@ -42,9 +42,7 @@ function scrollToGrid() {
 			scrollTop: $('#load-section').offset().top}, 1000);
 			$('.user-input').val('');
 			setTimeout(function() {
-				$('#load-section').fadeOut('fast', function() {
-					//$('#grid-section').show();
-				});
+				$('#load-section').fadeOut('fast');
 			}, 4600);
 			}
 	//In case user tries to use this input field again:
@@ -90,15 +88,12 @@ function getTastekid(query, newQuery) {
 		type: "GET",
 	})
 	.done(function(result){
-		console.log('still succeeded even though bad search');
 		thumbNumber = 1;
-		console.log('result: ' + result.Similar.Results);
 		if (result.Similar.Results == '') {
 				noRecommendations();
 		}
 		// Show the recommended items that are similar
 		$.each(result.Similar.Results, function(i, item) {
-			console.log('Rec Results: ' + item.Name);
 			// Add each similar query result to reach limit of 10 results
 			var simResExec = true;
 			// Need to change the thumb number so the correct information gets displayed (very important for the grid)
@@ -113,7 +108,6 @@ function getTastekid(query, newQuery) {
 	})
 	// If request does not work properly:
 	.fail(function(jqXHR, error, errorThrown) {
-		console.log('bad search');
 	})
 }
 // Function to get the images from Bing's API:
@@ -203,7 +197,6 @@ function alsoLikeClick() {
 }
 //If request did work but Tastekid doesn't actually have recs:
 function noRecommendations() {
-			console.log('no recommendations is running fine');
 			$('#grid-section, .load-message').fadeOut();
 			$('.rec-fail').fadeIn();
 			//Empty grid-section
