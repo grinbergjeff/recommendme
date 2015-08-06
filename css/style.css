@@ -144,6 +144,11 @@ ul li {
 	text-align: center;
 	margin-top: 85px;
 }
+.rec-fail {
+	text-align: center;
+	color: white;
+	padding-top: 40px;
+}
 /*Grid Section*/
 .display-similar {
 	padding-top: 1%;

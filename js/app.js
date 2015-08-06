@@ -1,13 +1,12 @@
 //JQuery Code:
 $(document).ready(function() {
 	$('#grid-section, #load-section').hide(); // Hide grid section in the beginning
-	 $('.recommenedmore').hide(); // Hide the what else do you like div
+	 $('.recommenedmore, .rec-fail').hide(); // Hide the what else do you like div
 	searchMe = "https://www.tastekid.com/api/similar?q=";
 	downArrow();
 	whatUserLikes();
 	rotateWords();
 	recMeMore();
-	//After the grid is made, let users have chance to add items that are recommeneded to them but they already like to strengthen their recommendation
 	alsoLikeClick();
 });
 // When bouncing arrow is pressed, browser scrolls to next section
@@ -32,6 +31,8 @@ function whatUserLikes() {
 	});
 }
 function scrollToGrid() {
+	$('.rec-fail').hide();
+	$('.load-message').show();
 	userLikes = $('.user-input').val();// global variable for better search results
 			if (userLikes !== '') {
 			//Send the query to Tastekid!
@@ -42,7 +43,7 @@ function scrollToGrid() {
 			$('.user-input').val('');
 			setTimeout(function() {
 				$('#load-section').fadeOut('fast', function() {
-					$('#grid-section').show();
+					//$('#grid-section').show();
 				});
 			}, 4600);
 			}
@@ -70,6 +71,7 @@ function rotateWords() {
 }
 // Function to get API results from Tastekid!
 function getTastekid(query, newQuery) {
+	var thumbNumber = 0;
 	var request = {
 		k: "147333-grinberg-Q21V1S5Z",
 		info: 1,
@@ -88,9 +90,15 @@ function getTastekid(query, newQuery) {
 		type: "GET",
 	})
 	.done(function(result){
-		var thumbNumber = 1;
+		console.log('still succeeded even though bad search');
+		thumbNumber = 1;
+		console.log('result: ' + result.Similar.Results);
+		if (result.Similar.Results == '') {
+				noRecommendations();
+		}
 		// Show the recommended items that are similar
 		$.each(result.Similar.Results, function(i, item) {
+			console.log('Rec Results: ' + item.Name);
 			// Add each similar query result to reach limit of 10 results
 			var simResExec = true;
 			// Need to change the thumb number so the correct information gets displayed (very important for the grid)
@@ -100,17 +108,12 @@ function getTastekid(query, newQuery) {
 				if(thumbNumber < 14) {
 					getBing(item.Name, item.Type, item, thumbNumber);
 				}
-			}	
+			}
 		});
 	})
 	// If request does not work properly:
 	.fail(function(jqXHR, error, errorThrown) {
-		console.log('tastekid failed');
-		// Scroll to recommendation
-		$('body, html').animate({
-			scrollTop: $('#wdyl').offset().top}, 1000);
-		//Empty grid-section
-		$('.thumbs, .portfolio-content').empty();
+		console.log('bad search');
 	})
 }
 // Function to get the images from Bing's API:
@@ -135,14 +138,12 @@ function getBing(searchQuery, type, displayItem, displayThumbnumber) {
 	})
 	// If not successful
 	.fail(function(jqXHR, error, errorThrown) {
-		console.log(' Bing Result :Failed');
 	})
 }
 // Function to display the thumbnails, extra description of the grid and the images from Bing
 function displayInfo(rec, thumbNumber, imgUrl) {
 	var displayThumbs = $('#grid-section').find('.thumbs');
 	var displayDesc = $('#grid-section').find('.portfolio-content');
-	console.log(rec.Name);
 	var imageLink = imgUrl; //URL to Bing's result for the query
 		//Append the thumbs portion for each entry
 		displayThumbs.append('<li><a href="#thumb' + thumbNumber + '" class="thumbnail" ' + 'style="background-image: url(' + imageLink + ')"><h4>' + rec.Type + '</h4><span class="description">' + rec.Name + '</span></a></li>');
@@ -159,6 +160,9 @@ function displayInfo(rec, thumbNumber, imgUrl) {
 		cols: 3,
     	transition: 'slideDown'
 	});
+	setTimeout(function() {
+					$('#grid-section').show();
+			}, 4600);
 }
 //Allow user to get better search results by inputting what else they like
 function recMeMore() {
@@ -196,4 +200,12 @@ function alsoLikeClick() {
 			}, 4600);
 		e.preventDefault();
 	})
+}
+//If request did work but Tastekid doesn't actually have recs:
+function noRecommendations() {
+			console.log('no recommendations is running fine');
+			$('#grid-section, .load-message').fadeOut();
+			$('.rec-fail').fadeIn();
+			//Empty grid-section
+			$('.thumbs, .portfolio-content').empty();
 }
