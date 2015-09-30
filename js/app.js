@@ -43,6 +43,8 @@ function scrollToGrid() {
 			$('.user-input').val('');
 			setTimeout(function() {
 				$('#load-section').fadeOut('fast');
+				$('body, html').animate({
+			scrollTop: $('#grid-section').offset().top});
 			}, 4600);
 			}
 	//In case user tries to use this input field again:
