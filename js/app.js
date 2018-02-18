@@ -153,7 +153,7 @@ function displayInfo(rec, thumbNumber, imgUrl) {
 	}
 	//Run the grid code!
 	$(".thumbs").portfolio({
-		cols: 3,
+		cols: 2,
     	transition: 'slideDown'
 	});
 	setTimeout(function() {
