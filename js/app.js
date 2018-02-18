@@ -115,7 +115,7 @@ function getTastedive(query, newQuery) {
 // Function to get the images from Bing's API:
 function getBing(searchQuery, type, displayItem, displayThumbnumber) {
 	var serviceURL = 'https://api.cognitive.microsoft.com/bing/v7.0/images/search?q='; 
-	var AppId = "7b789ac547e7433e8a90829219ac754a"; // StackOverflow says to add a colon in front of your ID!! 
+	var AppId = "7b789ac547e7433e8a90829219ac754a"; 
 	var search = encodeURIComponent(searchQuery);
 	var size = "&qft=+filterui:imagesize-medium";
 	var format = "&$format=json";
@@ -124,19 +124,19 @@ function getBing(searchQuery, type, displayItem, displayThumbnumber) {
 	var bresult = $.ajax({
 						url: burl,
 						type: "GET",
+						async: false,
 						beforeSend: function(xhrObj){
 							//Request headers
 							xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", AppId);
-						},
+					},
 	})
 	.success( bresult = function(bingdata) {
 		// If successful in getting results, display the image for each result!
-		console.log(bingdata);
 		displayInfo(displayItem, displayThumbnumber, bingdata.value[0].contentUrl);
 	})
 	// If not successful
 	.fail(function(jqXHR, error, errorThrown) {
-	});
+	})
 }
 // Function to display the thumbnails, extra description of the grid and the images from Bing
 function displayInfo(rec, thumbNumber, imgUrl) {
@@ -155,7 +155,7 @@ function displayInfo(rec, thumbNumber, imgUrl) {
 	}
 	//Run the grid code!
 	$(".thumbs").portfolio({
-		cols: 2,
+		cols: 3,
     	transition: 'slideDown'
 	});
 	setTimeout(function() {
