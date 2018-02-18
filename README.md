@@ -1,5 +1,6 @@
 # recommendme
-A recommendation platform using Tastedive's API
+A recommendation platform based on what you like.
+
 To go to the link:
 
 http://grinbergjeff.github.io/recommendme/
