@@ -2,7 +2,7 @@
 $(document).ready(function() {
 	$('#grid-section, #load-section').hide(); // Hide grid section in the beginning
 	 $('.recommenedmore, .rec-fail').hide(); // Hide the what else do you like div
-	searchMe = "https://www.tastekid.com/api/similar?q=";
+	searchMe = "https://www.tastedive.com/api/similar?q=";
 	downArrow();
 	whatUserLikes();
 	rotateWords();
@@ -36,7 +36,7 @@ function scrollToGrid() {
 	userLikes = $('.user-input').val();// global variable for better search results
 			if (userLikes !== '') {
 			//Send the query to Tastekid!
-			getTastekid(userLikes, userLikes);	
+			getTastedive(userLikes, userLikes);	
 			$('#load-section').fadeIn('medium');
 			$('body, html').animate({
 			scrollTop: $('#load-section').offset().top}, 1000);
@@ -50,7 +50,7 @@ function scrollToGrid() {
 	//In case user tries to use this input field again:
 	$(`#grid-section`).hide();
 	$('.thumbs, .portfolio-content').empty();
-	searchMe = "https://www.tastekid.com/api/similar?q=";
+	searchMe = "https://www.tastedive.com/api/similar?q=";
 }
 // Animates the rotation of words in the statmenet before input
 function rotateWords() {
@@ -69,11 +69,11 @@ function rotateWords() {
 		}
 	}, 1000);
 }
-// Function to get API results from Tastekid!
-function getTastekid(query, newQuery) {
+// Function to get API results from Tastedive!
+function getTastedive(query, newQuery) {
 	var thumbNumber = 0;
 	var request = {
-		k: "147333-grinberg-Q21V1S5Z",
+		k: "147333-grinberg-2VEUG8K7",
 		info: 1,
 		verbose: 1,
 		format: "JSON"
@@ -103,7 +103,7 @@ function getTastekid(query, newQuery) {
 				thumbNumber++;
 				//Show 12 similar results
 				if(thumbNumber < 14) {
-					getBing(item.Name, item.Type, item, thumbNumber);
+					setTimeout(getBing(item.Name, item.Type, item, thumbNumber),1000);
 				}
 			}
 		});
@@ -114,27 +114,29 @@ function getTastekid(query, newQuery) {
 }
 // Function to get the images from Bing's API:
 function getBing(searchQuery, type, displayItem, displayThumbnumber) {
-	var serviceURL = 'https://api.datamarket.azure.com/Bing/Search/v1/Image'; 
-	var AppId = ":tBd1IpRMjCGWa2DLLvATp/n4ccHyXTV6qvvkdY+5lLg"; // StackOverflow says to add a colon in front of your ID!! 
-	var EncAppId = btoa(AppId); // StackOverflow says to encode with base 64!
-	var search = "?Query=%27%" + searchQuery;
-	var typeSearch = "%20" + type +	"%27";
-	var size = "&ImageFilters=%27Aspect%3AWide%27";
+	var serviceURL = 'https://api.cognitive.microsoft.com/bing/v7.0/images/search?q='; 
+	var AppId = "7b789ac547e7433e8a90829219ac754a"; // StackOverflow says to add a colon in front of your ID!! 
+	var search = encodeURIComponent(searchQuery);
+	var size = "&qft=+filterui:imagesize-medium";
 	var format = "&$format=json";
-	var burl = serviceURL + search + typeSearch + size + format;
+	var burl = serviceURL + search + size + format;
 	
 	var bresult = $.ajax({
-		url: burl,
-		type: 'GET',
-		headers: {	'Authorization': "Basic " + EncAppId} // StackOverflow helps here too!
+						url: burl,
+						type: "GET",
+						beforeSend: function(xhrObj){
+							//Request headers
+							xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key", AppId);
+						},
 	})
 	.success( bresult = function(bingdata) {
 		// If successful in getting results, display the image for each result!
-		displayInfo(displayItem, displayThumbnumber, bingdata.d.results[0].MediaUrl);
+		console.log(bingdata);
+		displayInfo(displayItem, displayThumbnumber, bingdata.value[0].contentUrl);
 	})
 	// If not successful
 	.fail(function(jqXHR, error, errorThrown) {
-	})
+	});
 }
 // Function to display the thumbnails, extra description of the grid and the images from Bing
 function displayInfo(rec, thumbNumber, imgUrl) {
@@ -169,7 +171,7 @@ function recMeMore() {
 			$('.thumbs, .portfolio-content').empty();
 			$('#load-section').fadeIn();
 			//Send the query to Tastekid!
-			getTastekid(userLikes, moreLikes);
+			getTastedive(userLikes, moreLikes);
 			setTimeout(function() {
 				$('#load-section').fadeOut('fast', function() {
 					$('#grid-section').show();
@@ -188,7 +190,7 @@ function alsoLikeClick() {
 		$('#grid-section').fadeOut();
 		$('.thumbs, .portfolio-content').empty();
 		$('#load-section').fadeIn();
-		getTastekid(userLikes, foundTitle);
+		getTastedive(userLikes, foundTitle);
 		setTimeout(function() {
 				$('#load-section').fadeOut('fast', function() {
 					$('#grid-section').show();
